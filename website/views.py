@@ -3,9 +3,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
 from .forms import *
+from .models import Record
 
 
 def home(request):
+    records = Record.objects.all()
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -17,7 +20,7 @@ def home(request):
             messages.warning(request, "Error!")
         return redirect('home')
 
-    context = {}
+    context = {'records': records}
     return render(request, 'home.html', context)
 
 
