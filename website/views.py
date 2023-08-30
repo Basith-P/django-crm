@@ -47,3 +47,13 @@ def register_view(request):
     form = SignupForm()
     context = {'form': form}
     return render(request, 'register.html', context)
+
+
+def delete_record(request, pk):
+    if request.user.is_authenticated:
+        record = Record.objects.get(id=pk)
+        record.delete()
+        messages.success(request, "Record of {record} deleted")
+    else:
+        messages.warning(request, "You don't have access to do that")
+    return redirect('home')
