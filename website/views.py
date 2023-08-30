@@ -57,3 +57,16 @@ def delete_record(request, pk):
     else:
         messages.warning(request, "You don't have access to do that")
     return redirect('home')
+
+
+def add_record(request):
+    form = AddRecordForm(request.POST or None)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Record Added...")
+        return redirect('home')
+    else:
+        messages.warning(request, "You Must Be Logged In...")
+        return render(request, 'add_record.html', {'form': form})
